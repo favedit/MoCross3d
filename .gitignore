@@ -1,0 +1,17 @@
+/Build
+/Source/Cross/Common/MoCommon/vcproject/Debug
+/Source/Cross/Common/MoCommon/vcproject/x64
+/Source/Cross/Common/MoCore/vcproject/Debug
+/Source/Cross/Common/MoCore/vcproject/x64
+/Source/Cross/Common/MoMath/vcproject/Debug
+/Source/Cross/Common/MoMath/vcproject/x64
+/Source/Cross/Utility/ModelExportSolution/MoModelCore/x64
+/Source/Cross/Utility/ModelExportSolution/MoModelExporter/x64
+/Source/Library/LibLzma/vcproject/Debug
+/Source/Library/LibLzma/vcproject/x64
+/Source/Cross/Utility/FbxExportSolution/MoFbx2016Core/x64
+/Source/Cross/Utility/FbxExportSolution/MpFbx2016Exporter/x64
+/Source/Cross/Utility/ModelExportSolution/*.sdf
+/Source/Cross/Utility/ModelExportSolution/MoModelCore/Debug
+/Source/Cross/Utility/ModelExportSolution/MoModelExporter/Debug
+/Source/Cross/Common/MoCommon/vcproject/*.user
