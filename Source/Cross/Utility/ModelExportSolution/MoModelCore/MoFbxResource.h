@@ -157,8 +157,9 @@ public:
    MO_ABSTRACT TResult Serialize(IDataOutput* pOutput);
    MO_ABSTRACT TResult SaveConfig(FXmlNode* pConfig);
 public:
-   TResult SaveFile(TCharC* pFileName);
+   TResult SaveDataFile(TCharC* pFileName);
    TResult SaveConfigFile(TCharC* pFileName);
+   TResult SaveFile(TCharC* pFileName);
 };
 
 MO_NAMESPACE_END;

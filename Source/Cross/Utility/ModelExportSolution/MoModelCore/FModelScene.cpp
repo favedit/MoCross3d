@@ -112,32 +112,6 @@ TResult FModelScene::LoadFile(TCharC* pFileName){
    const aiScene* pAiScene = import.ReadFile(pFileName, aiProcess_Triangulate | aiProcess_FlipUVs);
    // 处理节点
    ProcessNode(pAiScene, pAiScene->mRootNode);
-   //// 设置名称
-   //TFileInfo fileInfo = pFileName;
-   //_code = fileInfo.Code();
-   //// 获得参数
-   //FbxManager* pFbxManager = _pManager->FbxManager();
-   //FbxIOSettings* pFbxIoSettings = _pManager->FbxIoSettings();
-   //SFbxSdkVersion& managerVersion = _pManager->Version();
-   //TString8 fileName;
-   //fileName.Assign16(pFileName);
-   //// 创建导入器
-   //FbxImporter* pImporter = FbxImporter::Create(pFbxManager, NULL);
-   //TBool initializeStatusCd = pImporter->Initialize(fileName.MemoryC(), -1, pFbxIoSettings);
-   //if(!initializeStatusCd){
-   //   MO_FATAL(TC("Open fbx file failure. (file_name={1})"), pFileName);
-   //}
-   //// 导入场景
-   //_pFbxScene->Clear();
-   //TBool importStatusCd = pImporter->Import(_pFbxScene);
-   //if (!importStatusCd) {
-   //   MO_FATAL(TC("Import fbx scene failure. (file_name={1})"), pFileName);
-   //}
-   //// 释放导入器
-   //MO_DESTORY(pImporter);
-   //// 处理节点
-   //FbxNode* pRootNode = _pFbxScene->GetRootNode();
-   //ProcessNode(pRootNode);
    return ESuccess;
 }
 

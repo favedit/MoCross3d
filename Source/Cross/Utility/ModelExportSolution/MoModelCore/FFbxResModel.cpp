@@ -99,12 +99,12 @@ TResult FFbxResModel::SaveConfig(FXmlNode* pConfig){
 }
 
 //============================================================
-// <T>存储文件。</T>
+// <T>存储数据文件。</T>
 //
 // @param pFileName 文件名称
 // @return 处理结果
 //============================================================
-TResult FFbxResModel::SaveFile(TCharC* pFileName){
+TResult FFbxResModel::SaveDataFile(TCharC* pFileName){
    MO_ASSERT_POINTER(pFileName);
    FByteFile* pFile = MO_CREATE(FByteFile);
    pFile->EnsureSize(1024 * 1024);
@@ -127,6 +127,25 @@ TResult FFbxResModel::SaveConfigFile(TCharC* pFileName){
    SaveConfig(pRoot);
    pDocument->SaveFile(pFileName);
    MO_DELETE(pDocument);
+   return ESuccess;
+}
+
+//============================================================
+// <T>存储文件。</T>
+//
+// @param pFileName 文件名称
+// @return 处理结果
+//============================================================
+TResult FFbxResModel::SaveFile(TCharC* pFileName){
+   // 存储数据文件
+   TString dataFileName = pFileName;
+   SaveDataFile(dataFileName);
+   if(dataFileName.EndsWith(TC(".model"))){
+      // 存储配置文件
+      //TString configFileName = dataFileName.LeftStrC(dataFileName.Length() - 6);
+      //configFileName.Append((TCharC*)TC(".xml"));
+      //SaveConfigFile(configFileName);
+   }
    return ESuccess;
 }
 

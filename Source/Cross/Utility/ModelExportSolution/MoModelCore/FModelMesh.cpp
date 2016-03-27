@@ -32,7 +32,7 @@ FModelMesh::~FModelMesh() {
 TResult FModelMesh::Setup(){
    MO_ASSERT_POINTER(_pAiMesh);
    // 获得信息
-   _code = _pAiMesh->mName.C_Str();
+   _code = _pAiNode->mName.C_Str();
    TInt vertexCount = _pAiMesh->mNumVertices;
    TInt faceCount = _pAiMesh->mNumFaces;
    TInt boneCount = _pAiMesh->mNumBones;
@@ -41,10 +41,11 @@ TResult FModelMesh::Setup(){
    TBool hasUv1 = _pAiMesh->HasTextureCoords(1);
    TBool hasNormal = _pAiMesh->HasNormals();
    TBool hasTangent = _pAiMesh->HasTangentsAndBitangents();
-   MO_DEBUG(TC("Read mesh. (node=%s, code=%s, point=%d, color=%d, uv0=%d|%d, normal=%d, tangent=%d, face=%d, bone=%d)"),
-      _pAiNode->mName.C_Str(), (TCharC*)_code, vertexCount, hasColor, hasUv0, hasUv1, hasNormal, hasTangent, faceCount, boneCount);
+   MO_DEBUG(TC("Read mesh. (code=%s, point=%d, color=%d, uv0=%d|%d, normal=%d, tangent=%d, face=%d, bone=%d)"),
+         (TCharC*)_code, vertexCount, hasColor, hasUv0, hasUv1, hasNormal, hasTangent, faceCount, boneCount);
    // 设置属性流
    _vertexAttributeCount = 1;
+   _vertexAttributes[EFbxVertexAttribute_Position] = ETrue;
    if(hasColor){
       _vertexAttributeCount++;
       _vertexAttributes[EFbxVertexAttribute_Color0] = ETrue;
@@ -180,56 +181,96 @@ TResult FModelMesh::Store(FFbxResModelMesh* pResMesh){
    // 设置属性
    pResMesh->SetCode(_code);
    // 写入顶点坐标数据流
-   FFbxResStream* pPositionStream = MO_CREATE(FFbxResStream);
-   pPositionStream->SetCode(TC("position"));
-   pPositionStream->SetDataCount(vertexCount);
-   pPositionStream->SetDataStride(sizeof(TFloat) * 3);
-   pPositionStream->SetElementCount(3);
-   pPositionStream->SetElementDataCd(EFbxData_Float32);
-   FByteStream* pPositionData = pPositionStream->Data();
-   for(TInt vertexIndex = 0; vertexIndex < vertexCount; vertexIndex++){
-      SModelVertex* pVertex = pVertexs->Get(vertexIndex);
-      SFloatPoint3& position = pVertex->position;
-      pPositionData->WriteFloat(position.x);
-      pPositionData->WriteFloat(position.y);
-      pPositionData->WriteFloat(position.z);
-   }
-   pResMesh->VertexStreams()->Push(pPositionStream);
-   // 写入纹理坐标数据流
-   if(ContainsAttribute(EFbxVertexAttribute_Coord0)){
-      FFbxResStream* pNormalStream = MO_CREATE(FFbxResStream);
-      pNormalStream->SetCode(TC("coord"));
-      pNormalStream->SetDataCount(vertexCount);
-      pNormalStream->SetDataStride(sizeof(TFloat) * 2);
-      pNormalStream->SetElementCount(2);
-      pNormalStream->SetElementDataCd(EFbxData_Float32);
-      FByteStream* pData = pNormalStream->Data();
+   if(ContainsAttribute(EFbxVertexAttribute_Position)){
+      FFbxResStream* pStream = MO_CREATE(FFbxResStream);
+      pStream->SetCode(TC("position"));
+      pStream->SetDataCount(vertexCount);
+      pStream->SetDataStride(sizeof(TFloat) * 3);
+      pStream->SetElementCount(3);
+      pStream->SetElementDataCd(EFbxData_Float32);
+      FByteStream* pPositionData = pStream->Data();
       for(TInt vertexIndex = 0; vertexIndex < vertexCount; vertexIndex++){
          SModelVertex* pVertex = pVertexs->Get(vertexIndex);
-         SFloatPoint2& coord = pVertex->coord;
-         pData->WriteFloat(coord.x);
-         pData->WriteFloat(coord.y);
+         SFloatPoint3& value = pVertex->position;
+         pPositionData->WriteFloat(value.x);
+         pPositionData->WriteFloat(value.y);
+         pPositionData->WriteFloat(value.z);
       }
-      pResMesh->VertexStreams()->Push(pNormalStream);
+      pResMesh->VertexStreams()->Push(pStream);
+   }
+   // 写入纹理坐标数据流
+   if(ContainsAttribute(EFbxVertexAttribute_Coord0)){
+      FFbxResStream* pStream = MO_CREATE(FFbxResStream);
+      pStream->SetCode(TC("coord"));
+      pStream->SetDataCount(vertexCount);
+      pStream->SetDataStride(sizeof(TFloat) * 2);
+      pStream->SetElementCount(2);
+      pStream->SetElementDataCd(EFbxData_Float32);
+      FByteStream* pData = pStream->Data();
+      for(TInt vertexIndex = 0; vertexIndex < vertexCount; vertexIndex++){
+         SModelVertex* pVertex = pVertexs->Get(vertexIndex);
+         SFloatPoint2& value = pVertex->coord;
+         pData->WriteFloat(value.x);
+         pData->WriteFloat(value.y);
+      }
+      pResMesh->VertexStreams()->Push(pStream);
    }
    // 写入顶点法线数据流
    if(ContainsAttribute(EFbxVertexAttribute_Normal)){
-      FFbxResStream* pNormalStream = MO_CREATE(FFbxResStream);
-      pNormalStream->SetCode(TC("normal"));
-      pNormalStream->SetDataCount(vertexCount);
-      pNormalStream->SetDataStride(sizeof(TByte) * 4);
-      pNormalStream->SetElementCount(4);
-      pNormalStream->SetElementDataCd(EFbxData_Uint8);
-      FByteStream* pNormalData = pNormalStream->Data();
+      FFbxResStream* pStream = MO_CREATE(FFbxResStream);
+      pStream->SetCode(TC("normal"));
+      pStream->SetDataCount(vertexCount);
+      pStream->SetDataStride(sizeof(TByte) * 4);
+      pStream->SetElementCount(4);
+      pStream->SetElementDataCd(EFbxData_Uint8);
+      FByteStream* pNormalData = pStream->Data();
       for(TInt vertexIndex = 0; vertexIndex < vertexCount; vertexIndex++){
          SModelVertex* pVertex = pVertexs->Get(vertexIndex);
-         SFloatVector3& normal = pVertex->normal;
-         pNormalData->WriteUint8((TUint8)((normal.x + 1.0f) * 0.5f * 255.0f));
-         pNormalData->WriteUint8((TUint8)((normal.y + 1.0f) * 0.5f * 255.0f));
-         pNormalData->WriteUint8((TUint8)((normal.z + 1.0f) * 0.5f * 255.0f));
+         SFloatVector3& value = pVertex->normal;
+         pNormalData->WriteUint8((TUint8)((value.x + 1.0f) * 0.5f * 255.0f));
+         pNormalData->WriteUint8((TUint8)((value.y + 1.0f) * 0.5f * 255.0f));
+         pNormalData->WriteUint8((TUint8)((value.z + 1.0f) * 0.5f * 255.0f));
          pNormalData->WriteUint8((TUint8)255);
       }
-      pResMesh->VertexStreams()->Push(pNormalStream);
+      pResMesh->VertexStreams()->Push(pStream);
+   }
+   // 写入顶点副法线数据流
+   if(ContainsAttribute(EFbxVertexAttribute_Binormal)){
+      FFbxResStream* pStream = MO_CREATE(FFbxResStream);
+      pStream->SetCode(TC("binormal"));
+      pStream->SetDataCount(vertexCount);
+      pStream->SetDataStride(sizeof(TByte) * 4);
+      pStream->SetElementCount(4);
+      pStream->SetElementDataCd(EFbxData_Uint8);
+      FByteStream* pNormalData = pStream->Data();
+      for(TInt vertexIndex = 0; vertexIndex < vertexCount; vertexIndex++){
+         SModelVertex* pVertex = pVertexs->Get(vertexIndex);
+         SFloatVector3& value = pVertex->binormal;
+         pNormalData->WriteUint8((TUint8)((value.x + 1.0f) * 0.5f * 255.0f));
+         pNormalData->WriteUint8((TUint8)((value.y + 1.0f) * 0.5f * 255.0f));
+         pNormalData->WriteUint8((TUint8)((value.z + 1.0f) * 0.5f * 255.0f));
+         pNormalData->WriteUint8((TUint8)255);
+      }
+      pResMesh->VertexStreams()->Push(pStream);
+   }
+   // 写入顶点切线数据流
+   if(ContainsAttribute(EFbxVertexAttribute_Tangent)){
+      FFbxResStream* pStream = MO_CREATE(FFbxResStream);
+      pStream->SetCode(TC("tangent"));
+      pStream->SetDataCount(vertexCount);
+      pStream->SetDataStride(sizeof(TByte) * 4);
+      pStream->SetElementCount(4);
+      pStream->SetElementDataCd(EFbxData_Uint8);
+      FByteStream* pNormalData = pStream->Data();
+      for(TInt vertexIndex = 0; vertexIndex < vertexCount; vertexIndex++){
+         SModelVertex* pVertex = pVertexs->Get(vertexIndex);
+         SFloatVector3& value = pVertex->tangent;
+         pNormalData->WriteUint8((TUint8)((value.x + 1.0f) * 0.5f * 255.0f));
+         pNormalData->WriteUint8((TUint8)((value.y + 1.0f) * 0.5f * 255.0f));
+         pNormalData->WriteUint8((TUint8)((value.z + 1.0f) * 0.5f * 255.0f));
+         pNormalData->WriteUint8((TUint8)255);
+      }
+      pResMesh->VertexStreams()->Push(pStream);
    }
    //............................................................
    // 写入面索引数据流

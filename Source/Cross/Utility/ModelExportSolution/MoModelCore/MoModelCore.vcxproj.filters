@@ -24,18 +24,6 @@
     <ClCompile Include="FFbxResModel.cpp">
       <Filter>2-Resource</Filter>
     </ClCompile>
-    <ClCompile Include="F3dsGameTrackExporter.cpp">
-      <Filter>3-Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="F3dsExporter.cpp">
-      <Filter>3-Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="F3dsGameExporter.cpp">
-      <Filter>3-Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="F3dsGameGeometryExporter.cpp">
-      <Filter>3-Parser</Filter>
-    </ClCompile>
     <ClCompile Include="FFbxResourceObject.cpp">
       <Filter>2-Resource</Filter>
     </ClCompile>
