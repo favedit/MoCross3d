@@ -11,6 +11,8 @@
 #include <MoFbx2016Core.h>
 #include "MpFbxDefine.h"
 
+#define __TEST__
+
 MO_NAMESPACE_INCLUDE;
 
 //============================================================
@@ -22,23 +24,27 @@ MO_NAMESPACE_INCLUDE;
 // @return 类名
 //============================================================
 TInt32 main(TInt argumentsCount, TChar** pArguments){
+#ifdef __TEST__2
+   // 调试参数
+   //TString sourceFileName = TC("D:/Resource/xiong/xiong.fbx");
+   //TString targetFileName = TC("D:/Microbject/MoTypeScript/Script/res/model/xiong/xiong.model");
+   //TString targetConfigName = TC("D:/Microbject/MoTypeScript/Script/res/model/xiong/xiong.xml");
+   TString sourceFileName = TC("D:/MoProject/Resource/demo/model/fd-pvw-展示/fd-sc.car.01-场景.汽车.01/md-001-汽车.奥迪/model.fbx");
+   TString targetFileName = TC("D:/MoProject/Asset/demo/model/pvw.sc.car.01.001.model");
+#else
    // 获取参数
    if(argumentsCount != 3){
       return -1;
    }
    TString sourceFileName = pArguments[1];
    TString targetFileName = pArguments[2];
-   // 调试参数
-   //TString sourceFileName = TC("D:/Resource/xiong/xiong.fbx");
-   //TString targetFileName = TC("D:/Microbject/MoTypeScript/Script/res/model/xiong/xiong.model");
-   //TString targetConfigName = TC("D:/Microbject/MoTypeScript/Script/res/model/xiong/xiong.xml");
-   //TString sourceFileName = TC("D:/MoProject/Resource/demo/model/fd-pvw-展示/fd-sc.house.01-室内展示.01 (2LDK)/md-001-室内展示/model.fbx");
-   //TString targetFileName = TC("D:/MoProject/Asset/demo/model/pvw.sc.house.01.001.model");
-
+#endif // __TEST__
+   // 设置语言
+   setlocale(LC_ALL, "chs");
    // 初始化处理
    MoInitialize();
-   MO_STATIC_DEBUG("Source file: [%s]", sourceFileName);
-   MO_STATIC_DEBUG("Target file: [%s]", targetFileName);
+   MO_STATIC_DEBUG(TC("Source file: [%s]"), (TCharC*)sourceFileName);
+   MO_STATIC_DEBUG(TC("Target file: [%s]"), (TCharC*)targetFileName);
    // 打开场景
    FModelScene* pScene = RModelManager::SafeInstance().OpenScene(sourceFileName);
    // 存储资源

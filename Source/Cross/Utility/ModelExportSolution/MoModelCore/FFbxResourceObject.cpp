@@ -22,9 +22,10 @@ FFbxResourceObject::~FFbxResourceObject() {
 // @return 处理结果
 //============================================================
 TResult FFbxResourceObject::Serialize(IDataOutput * pOutput){
-   TString16 typeName;
-   typeName.Assign8(_typeName);
-   pOutput->WriteString16(typeName);
+   //TString16 typeName;
+   //typeName.Assign8(_typeName);
+   //pOutput->WriteString16(typeName);
+   pOutput->WriteString16(_typeName);
    pOutput->WriteInt32((TInt32)_version);
    return ESuccess;
 }

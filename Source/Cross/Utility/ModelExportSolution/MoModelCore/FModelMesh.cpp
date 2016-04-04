@@ -32,7 +32,16 @@ FModelMesh::~FModelMesh() {
 TResult FModelMesh::Setup(){
    MO_ASSERT_POINTER(_pAiMesh);
    // 获得信息
-   _code = _pAiNode->mName.C_Str();
+   //_code = _pAiNode->mName.C_Str();
+   _code.Assign8(_pAiNode->mName.C_Str());
+   aiVector3D position;
+   aiQuaterniont<float> rotation;
+   aiVector3D scale;
+   _pAiNode->mTransformation.Decompose(scale, rotation, position);
+   _position.Set(position.x, position.y, position.z);
+   _rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+   _scale.Set(scale.x, scale.y, scale.z);
+   // 获得网格信息
    TInt vertexCount = _pAiMesh->mNumVertices;
    TInt faceCount = _pAiMesh->mNumFaces;
    TInt boneCount = _pAiMesh->mNumBones;
@@ -180,6 +189,9 @@ TResult FModelMesh::Store(FFbxResModelMesh* pResMesh){
    TInt faceCount = pFaces->Count();
    // 设置属性
    pResMesh->SetCode(_code);
+   pResMesh->Position().Assign(_position);
+   pResMesh->Rotation().Set(_rotation);
+   pResMesh->Scale().Assign(_scale);
    // 写入顶点坐标数据流
    if(ContainsAttribute(EFbxVertexAttribute_Position)){
       FFbxResStream* pStream = MO_CREATE(FFbxResStream);

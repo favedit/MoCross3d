@@ -22,15 +22,18 @@ FFbxResourceComponent::~FFbxResourceComponent() {
 //============================================================
 TResult FFbxResourceComponent::Serialize(IDataOutput * pOutput){
    FFbxResourceObject::Serialize(pOutput);
-   TString16 guid;
-   guid.Assign8(_guid);
-   pOutput->WriteString16(guid);
-   TString16 code;
-   code.Assign8(_code);
-   pOutput->WriteString16(code);
-   TString16 label;
-   label.Assign8(_label);
-   pOutput->WriteString16(label);
+   //TString16 guid;
+   //guid.Assign8(_guid);
+   //pOutput->WriteString16(guid);
+   //TString16 code;
+   //code.Assign8(_code);
+   //pOutput->WriteString16(code);
+   //TString16 label;
+   //label.Assign8(_label);
+   //pOutput->WriteString16(label);
+   pOutput->WriteString16(_guid);
+   pOutput->WriteString16(_code);
+   pOutput->WriteString16(_label);
    return ESuccess;
 }
 

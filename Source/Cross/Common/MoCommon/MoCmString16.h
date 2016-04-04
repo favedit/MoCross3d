@@ -337,6 +337,7 @@ protected:
    //------------------------------------------------------------
    // <T>调整内存大小。</T>
    MO_OVERRIDE void InnerResize(TInt size, TBool copy, TBool extends, TBool force){
+
       MO_ASSERT(size <= S);
    }
 public:

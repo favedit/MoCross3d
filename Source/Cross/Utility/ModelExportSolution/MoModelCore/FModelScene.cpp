@@ -62,7 +62,7 @@ TResult FModelScene::ProcessNode(const aiScene* pAiScene, const aiNode* pAiNode)
    aiString name = pAiNode->mName;
    TInt meshCount = pAiNode->mNumMeshes;
    TInt nodeCount = pAiNode->mNumChildren;
-   MO_DEBUG("Process node %s. (child_count=%d, mesh_count=%d)", name.C_Str(), nodeCount, meshCount);
+   //MO_DEBUG("Process node %s. (child_count=%d, mesh_count=%d)", name.C_Str(), nodeCount, meshCount);
    // 处理网格集合
    for(TInt i = 0; i < meshCount; i++){
       TInt meshIndex = pAiNode->mMeshes[i];
@@ -107,9 +107,12 @@ TResult FModelScene::Store(FFbxResModel* pResModel){
 //============================================================
 TResult FModelScene::LoadFile(TCharC* pFileName){
    MO_ASSERT_POINTER(pFileName);
+   TString8 fileName;
+   fileName.Assign16(pFileName);
    // 导入场景
    Assimp::Importer import;
-   const aiScene* pAiScene = import.ReadFile(pFileName, aiProcess_Triangulate | aiProcess_FlipUVs);
+   //const aiScene* pAiScene = import.ReadFile(pFileName, aiProcess_Triangulate | aiProcess_FlipUVs);
+   const aiScene* pAiScene = import.ReadFile(fileName, aiProcess_Triangulate | aiProcess_FlipUVs);
    // 处理节点
    ProcessNode(pAiScene, pAiScene->mRootNode);
    return ESuccess;

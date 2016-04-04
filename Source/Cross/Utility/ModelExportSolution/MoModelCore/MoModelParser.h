@@ -69,6 +69,9 @@ protected:
    TString _code;
    FModelScene* _pScene;
    const aiNode* _pAiNode;
+   SFloatVector3 _position;
+   SFloatQuaternion _rotation;
+   SFloatVector3 _scale;
    const aiMesh* _pAiMesh;
    TInt _vertexAttributeCount;
    TBool _vertexAttributes[EFbxVertexAttribute_Count];
@@ -91,13 +94,6 @@ public:
       return _vertexAttributes[attributeCd];
    }
 public:
-   TResult ReadVertexPosition(TInt vertexIndex, SFloatPoint3* pPosition);
-   TResult ReadVertexColor(TInt vertexIndex, TInt vertexCounter, SFloatColor4* pColor);
-   TResult ReadVertexNormal(TInt vertexIndex, TInt vertexCounter, SFloatVector3* pNormal);
-   TResult ReadVertexBinormal(TInt vertexIndex, TInt vertexCounter, SFloatVector3* pBinormal);
-   TResult ReadVertexTangent(TInt vertexIndex, TInt vertexCounter, SFloatVector3* pTangent);
-   TResult ReadVertexCoord(TInt layer, TInt vertexIndex, TInt vertexCounter, SFloatPoint2* pCoord);
-   SModelVertex* SyncVertex(SFloatPoint3* pPosition, SFloatColor4* pColor, SFloatVector3* pNormal, SFloatPoint2* pCoord);
    TResult Serialize(IDataOutput* pOutput);
 public:
    TResult Store(FFbxResModelMesh* pResMesh);

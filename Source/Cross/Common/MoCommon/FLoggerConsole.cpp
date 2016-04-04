@@ -253,14 +253,14 @@ TBool FLoggerConsole::Output(TInt code, ELoggerLevel levelCd, TAnyC* pSender, TC
 #ifdef _MO_DEBUG
       if(_useLogger){
          logger.Append(TC("\r\n"));
-         MO_LIB_STRING_PRINT(TC("%s"), (TCharC*)logger);
+         MO_LIB_STRING_PRINT((TCharC*)logger);
       }
       if(_useViewer){
          OutputDebugString((TCharC*)logger);
       }
 #else
       if(_useLogger){
-         MO_LIB_STRING_PRINT(TC("%s"), (TCharC*)logger);
+         MO_LIB_STRING_PRINT((TCharC*)logger);
       }
 #endif // _MO_DEBUG
 #endif // _MO_WINDOWS

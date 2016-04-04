@@ -28,6 +28,10 @@ FFbxResModelMesh::~FFbxResModelMesh() {
 //============================================================
 TResult FFbxResModelMesh::Serialize(IDataOutput* pOutput){
    FFbxResourceComponent::Serialize(pOutput);
+   // 输出矩阵
+   _position.Serialize(pOutput);
+   _rotation.Serialize(pOutput);
+   _scale.Serialize(pOutput);
    // 输出顶点数据流集合
    TInt vertexStreamCount = _pVertexStreams->Count();
    pOutput->WriteInt32((TInt32)vertexStreamCount);
@@ -54,12 +58,17 @@ TResult FFbxResModelMesh::Serialize(IDataOutput* pOutput){
 TResult FFbxResModelMesh::SaveConfig(FXmlNode* pConfig){
    FFbxResourceComponent::SaveConfig(pConfig);
    // 输出网格集合
-   //TInt meshCount = _pMeshs->Count();
-   //pOutput->WriteInt32((TInt32)meshCount);
-   //for(TInt n = 0; n < meshCount; n++){
-   //   FFbxResMesh* pMesh = _pMeshs->Get(n);
-   //   pMesh->Serialize(pOutput);
-   //}
+   FXmlNode* pMatrix = pConfig->CreateNode(TC("Matrix"));
+   pMatrix->SetFloat(TC("tx"), _position.x);
+   pMatrix->SetFloat(TC("ty"), _position.y);
+   pMatrix->SetFloat(TC("tz"), _position.z);
+   pMatrix->SetFloat(TC("qx"), _rotation.x);
+   pMatrix->SetFloat(TC("qy"), _rotation.y);
+   pMatrix->SetFloat(TC("qz"), _rotation.z);
+   pMatrix->SetFloat(TC("qw"), _rotation.w);
+   pMatrix->SetFloat(TC("sx"), _scale.x);
+   pMatrix->SetFloat(TC("sy"), _scale.y);
+   pMatrix->SetFloat(TC("sz"), _scale.z);
    return ESuccess;
 }
 

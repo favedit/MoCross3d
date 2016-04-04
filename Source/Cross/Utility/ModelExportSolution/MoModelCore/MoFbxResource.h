@@ -125,6 +125,10 @@ typedef FObjects<FFbxResStream*> FFbxResStreams;
 //============================================================
 class MO_FBX_DECLARE FFbxResModelMesh : public FFbxResourceComponent{
 protected:
+   // 空间位置
+   SFloatVector3 _position;
+   SFloatQuaternion _rotation;
+   SFloatVector3 _scale;
    // 数据流集合
    FFbxResStreams* _pVertexStreams;
    FFbxResStreams* _pIndexStreams;
@@ -132,6 +136,9 @@ public:
    FFbxResModelMesh();
    MO_ABSTRACT ~FFbxResModelMesh();
 public:
+   MO_SOURCE_GETTER(SFloatVector3&, Position, _position);
+   MO_SOURCE_GETTER(SFloatQuaternion&, Rotation, _rotation);
+   MO_SOURCE_GETTER(SFloatVector3&, Scale, _scale);
    MO_SOURCE_GETTER(FFbxResStreams*, VertexStreams, _pVertexStreams);
    MO_SOURCE_GETTER(FFbxResStreams*, IndexStreams, _pIndexStreams);
 public:

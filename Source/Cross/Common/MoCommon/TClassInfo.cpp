@@ -64,7 +64,12 @@ TClassInfo::~TClassInfo(){
 //============================================================
 TBool TClassInfo::Parse(TCharC* pValue){
 #ifdef _MO_WINDOWS
+#ifdef _MO_UNICODE
+   TFsName fullName;
+   fullName.Assign8((TChar8C*)pValue);
+#else
    TFsName fullName = pValue;
+#endif // _MO_UNICODE
    TInt length = fullName.Length();
    TInt spaceStart = fullName.IndexOf(' ') + 1;
    TInt spaceEnd = fullName.IndexOf(':');

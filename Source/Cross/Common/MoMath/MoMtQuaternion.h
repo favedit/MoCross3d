@@ -194,6 +194,23 @@ public:
       pValue->y = y / w;
       pValue->z = z / w;
    }
+public:
+   //------------------------------------------------------------
+   // <T>序列化数据内容到输出流。</T>
+   void Serialize(IDataOutput* pOutput){
+      pOutput->WriteFloat(x);
+      pOutput->WriteFloat(y);
+      pOutput->WriteFloat(z);
+      pOutput->WriteFloat(w);
+   }
+   //------------------------------------------------------------
+   // <T>从输入流反序列化数据内容。</T>
+   void Unserialize(IDataInput* pInput){
+      x = pInput->ReadFloat();
+      y = pInput->ReadFloat();
+      z = pInput->ReadFloat();
+      w = pInput->ReadFloat();
+   }
 };
 
 //============================================================
@@ -374,6 +391,23 @@ public:
       pValue->x = x / w;
       pValue->y = y / w;
       pValue->z = z / w;
+   }
+public:
+   //------------------------------------------------------------
+   // <T>序列化数据内容到输出流。</T>
+   void Serialize(IDataOutput* pOutput){
+      pOutput->WriteDouble(x);
+      pOutput->WriteDouble(y);
+      pOutput->WriteDouble(z);
+      pOutput->WriteDouble(w);
+   }
+   //------------------------------------------------------------
+   // <T>从输入流反序列化数据内容。</T>
+   void Unserialize(IDataInput* pInput){
+      x = pInput->ReadDouble();
+      y = pInput->ReadDouble();
+      z = pInput->ReadDouble();
+      w = pInput->ReadDouble();
    }
 };
 

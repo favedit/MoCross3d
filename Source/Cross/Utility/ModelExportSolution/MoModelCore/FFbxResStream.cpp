@@ -26,9 +26,10 @@ FFbxResStream::~FFbxResStream(){
 TResult FFbxResStream::Serialize(IDataOutput * pOutput){
    FFbxResourceObject::Serialize(pOutput);
    // Êä³öÊôÐÔ
-   TString16 code;
-   code.Assign8(_code);
-   pOutput->WriteString16(code);
+   //TString16 code;
+   //code.Assign8(_code);
+   //pOutput->WriteString16(code);
+   pOutput->WriteString16(_code);
    pOutput->WriteUint8((TUint8)_elementDataCd);
    pOutput->WriteUint8((TUint8)_elementCount);
    pOutput->WriteBool(EFalse);
